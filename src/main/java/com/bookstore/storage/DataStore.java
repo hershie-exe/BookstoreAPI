@@ -1,6 +1,9 @@
 package com.bookstore.storage;
 
 import com.bookstore.model.*;
+import com.bookstore.exception.BookNotFoundException;
+import com.bookstore.exception.CartNotFoundException;
+import com.bookstore.exception.OutOfStockException;
 
 import java.util.*;
 
@@ -175,15 +178,21 @@ public class DataStore {
     // ---------- Orders ----------
     public static Order placeOrder(int customerId) {
         Cart cart = carts.get(customerId);
-        if (cart == null || cart.getItems().isEmpty()) return null;
+        if (cart == null || cart.getItems().isEmpty()) {
+            throw new CartNotFoundException(customerId);
+        }
 
         List<OrderItem> orderItems = new ArrayList<>();
         double total = 0;
 
         for (Cart.Item cartItem : cart.getItems()) {
             Book book = books.get(cartItem.getBookId());
-            if (book == null || book.getStock() < cartItem.getQuantity()) {
-                return null;
+            if (book == null) {
+                throw new BookNotFoundException(cartItem.getBookId());
+            }
+
+            if (book.getStock() < cartItem.getQuantity()) {
+                throw new OutOfStockException(book.getId(), cartItem.getQuantity(), book.getStock());
             }
 
             book.setStock(book.getStock() - cartItem.getQuantity());
@@ -234,4 +243,8 @@ public class DataStore {
                 .findFirst()
                 .orElse(null);
     }
+
+
 }
+
+

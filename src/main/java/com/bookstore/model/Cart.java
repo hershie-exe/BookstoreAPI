@@ -1,12 +1,15 @@
 package com.bookstore.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Cart {
     private int customerId;
     private List<Item> items;
 
-    public Cart() {}
+    public Cart() {
+        this.items = new ArrayList<>();
+    }
 
     public Cart(int customerId, List<Item> items) {
         this.customerId = customerId;
@@ -29,7 +32,6 @@ public class Cart {
         this.items = items;
     }
 
-    // ✅ Inner static Item class
     public static class Item {
         private int bookId;
         private int quantity;
