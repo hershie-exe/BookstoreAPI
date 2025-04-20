@@ -1,23 +1,60 @@
 package com.bookstore.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Cart {
     private int customerId;
-    private List<CartItem> items = new ArrayList<>();
+    private List<Item> items;
 
     public Cart() {}
 
-    public Cart(int customerId) {
+    public Cart(int customerId, List<Item> items) {
+        this.customerId = customerId;
+        this.items = items;
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
 
-    // Getters and Setters
+    public List<Item> getItems() {
+        return items;
+    }
 
-    public int getCustomerId() { return customerId; }
-    public void setCustomerId(int customerId) { this.customerId = customerId; }
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
 
-    public List<CartItem> getItems() { return items; }
-    public void setItems(List<CartItem> items) { this.items = items; }
+    // ✅ Inner static Item class
+    public static class Item {
+        private int bookId;
+        private int quantity;
+
+        public Item() {}
+
+        public Item(int bookId, int quantity) {
+            this.bookId = bookId;
+            this.quantity = quantity;
+        }
+
+        public int getBookId() {
+            return bookId;
+        }
+
+        public void setBookId(int bookId) {
+            this.bookId = bookId;
+        }
+
+        public int getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(int quantity) {
+            this.quantity = quantity;
+        }
+    }
 }

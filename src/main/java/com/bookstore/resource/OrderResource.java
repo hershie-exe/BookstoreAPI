@@ -21,8 +21,9 @@ public class OrderResource {
 
     @GET
     public List<Order> getAllOrders(@PathParam("customerId") int customerId) {
-        return DataStore.getAllOrders(customerId);
+        return DataStore.getOrdersByCustomer(customerId); // Corrected method call
     }
+
 
     @GET
     @Path("/{orderId}")

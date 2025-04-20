@@ -1,4 +1,15 @@
 package com.bookstore.exception;
 
-public class BookNotFoundExceptionMapper {
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
+
+@Provider
+public class BookNotFoundExceptionMapper implements ExceptionMapper<BookNotFoundException> {
+    @Override
+    public Response toResponse(BookNotFoundException exception) {
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity(new ErrorMessage(exception.getMessage(), 404))
+                .build();
+    }
 }

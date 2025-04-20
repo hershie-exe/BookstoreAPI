@@ -29,7 +29,12 @@ public class CartResource {
     public Response updateItem(@PathParam("customerId") int customerId,
                                @PathParam("bookId") int bookId,
                                Cart.Item item) {
-        Cart cart = DataStore.updateCartItem(customerId, bookId, item.getQuantity());
+        // Update the cart item by passing the whole Cart.Item (not just bookId and quantity)
+        item.setBookId(bookId);  // Set the correct bookId if not already set
+        Cart cart = DataStore.updateCartItem(customerId, item);
+        if (cart == null) {
+            throw new WebApplicationException("Item not found in cart", Response.Status.NOT_FOUND);
+        }
         return Response.ok(cart).build();
     }
 
@@ -38,6 +43,10 @@ public class CartResource {
     public Response removeItem(@PathParam("customerId") int customerId,
                                @PathParam("bookId") int bookId) {
         Cart cart = DataStore.removeFromCart(customerId, bookId);
+        if (cart == null) {
+            throw new WebApplicationException("Item not found in cart", Response.Status.NOT_FOUND);
+        }
         return Response.ok(cart).build();
     }
+
 }
