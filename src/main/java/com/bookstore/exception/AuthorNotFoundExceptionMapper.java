@@ -8,6 +8,9 @@ import javax.ws.rs.ext.Provider;
 public class AuthorNotFoundExceptionMapper implements ExceptionMapper<AuthorNotFoundException> {
     @Override
     public Response toResponse(AuthorNotFoundException exception) {
+
+        System.out.println("Caught exception: " + exception.getMessage());
+
         return Response.status(Response.Status.NOT_FOUND)
                 .entity(new ErrorMessage(exception.getMessage(), 404))
                 .build();

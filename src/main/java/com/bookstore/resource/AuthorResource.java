@@ -29,7 +29,9 @@ public class AuthorResource {
     @Path("/{id}")
     public Response getAuthorById(@PathParam("id") int id) {
         Author author = DataStore.getAuthor(id);
-        if (author == null) throw new AuthorNotFoundException(id);
+        if (author == null) {
+            throw new AuthorNotFoundException(id);
+        }
         return Response.ok(author).build();
     }
 
@@ -37,20 +39,29 @@ public class AuthorResource {
     @Path("/{id}")
     public Response updateAuthor(@PathParam("id") int id, Author author) {
         Author updated = DataStore.updateAuthor(id, author);
-        if (updated == null) throw new AuthorNotFoundException(id);
+        if (updated == null) {
+            throw new AuthorNotFoundException(id);
+        }
         return Response.ok(updated).build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response deleteAuthor(@PathParam("id") int id) {
-        if (!DataStore.deleteAuthor(id)) throw new AuthorNotFoundException(id);
+        if (!DataStore.deleteAuthor(id)) {
+            throw new AuthorNotFoundException(id);
+        }
         return Response.noContent().build();
     }
 
     @GET
     @Path("/{id}/books")
     public List<Book> getBooksByAuthor(@PathParam("id") int authorId) {
-        return DataStore.getBooksByAuthor(authorId);
+        // You can handle case where there are no books for the author
+        List<Book> books = DataStore.getBooksByAuthor(authorId);
+        if (books.isEmpty()) {
+            throw new AuthorNotFoundException(authorId); // Alternatively, you can return an empty list
+        }
+        return books;
     }
 }
